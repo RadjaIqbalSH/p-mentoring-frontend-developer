@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sesi - 11</title>
+</head>
+<body>
+
+  <div class="card">Hallo World</div>
+  <div>Hallo World2</div>
+
+  <p id="count"></p>
+  <button id="btn-click">+</button>
+  <button id="btn-click-2">-</button>
+
+  <script defer src="./main.js"></script>
+  <script>
+    // Contoh
+    document.getElementById("count").innerText = `Count = 1`
+    let count = 1
+    const maxStock = 10
+
+    function handleClickPlus () {
+      if (count < maxStock) {
+        count++
+        document.getElementById("count").innerText = `Count = ${count}`
+        console.log("Hallo Saya ter Klik Nih : ", count)
+        document.getElementById("count").style.color = "black"
+      }
+    }
+    function handleClickMin () {
+      if (count !== 0) {
+        count--
+        document.getElementById("count").innerText = `Count = ${count}`
+        console.log("Hallo Saya ter Klik Nih : ", count)
+        document.getElementById("count").style.color = "black"
+      } else {
+        document.getElementById("count").style.color = "red"
+      }
+    }
+
+    document.getElementById("btn-click").addEventListener("click", handleClickPlus)
+    document.getElementById("btn-click-2").addEventListener("click", handleClickMin)
+    // console.log("Hallo World");
+  </script>
+</body>
+</html>
