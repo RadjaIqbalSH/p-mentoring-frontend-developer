@@ -1,29 +1,29 @@
 const products = [
-  {
-    id: 1,
-    name: "Mouse Gaming",
-    price: 300000,
-    stock: 10,
-  },
-  {
-    id: 2,
-    name: "Monitor Gaming",
-    price: 1300000,
-    stock: 2
-  },
-  {
-    id: 3,
-    name: "Keyboard Gaming",
-    price: 450000,
-    stock: 3
-  },
-  {
-    id: 4,
-    name: "PC Gaming",
-    price: 10000000,
-    stock: 2
-  },
-]
+	{
+		id: 1,
+		name: "Mouse Gaming",
+		price: 300000,
+		stock: 10,
+	},
+	{
+		id: 2,
+		name: "Monitor Gaming",
+		price: 1300000,
+		stock: 2,
+	},
+	{
+		id: 3,
+		name: "Keyboard Gaming",
+		price: 450000,
+		stock: 3,
+	},
+	{
+		id: 4,
+		name: "PC Gaming",
+		price: 10000000,
+		stock: 2,
+	},
+];
 
 // Search using for of
 
@@ -39,45 +39,51 @@ const products = [
 
 // Search using find
 
-function findProduct(value) {
-
-  if (value.id === 3) {
-    return value
-  }
-
-  return undefined
+function findProducts(product, index) {
+	if (product.id === 2) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
-const searchResult = products.find(findProduct)
+const searchResult = products.find(findProducts);
 
-// console.log("searchResult => ", searchResult)
+// console.log("searchResult => ", searchResult);
 
 // Search using filter
 
-const filterResult = products.filter((value) => value.price > 1000000)
+function filterProducts(product, index) {
+	if (product.price > 1000000) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
-// console.log("filterResult => ", filterResult)
+const filterResult = products.filter(filterProducts);
+
+// console.log("filterResult => ", filterResult);
 
 // Map manipulating index value
 
-const mapResult = products.map((value) => {
+const mapResult = products.map((product) => {
+	product.needRestock = false;
 
-  value.needRestock = false
+	if (product.stock < 5) {
+		product.needRestock = true;
+	}
 
-  if (value.stock < 5) {
-    value.needRestock = true
-  }
-
-  return value
-})
+	return product;
+});
 
 // console.log("mapResult => ", mapResult)
 
 // Reduce untuk menjumlahkan stock dari products
 
-const reduceResult = products.reduce((current, value) => value.stock + current, 0);
+const reduceResult = products.reduce(
+	(current, value) => value.stock + current,
+	0
+);
 
-console.log("reduceResult => ", reduceResult)
-
-
-
+// console.log("reduceResult => ", reduceResult);
