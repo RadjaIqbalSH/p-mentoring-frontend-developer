@@ -75,7 +75,7 @@ function getSubTotal(data) {
 	return reduceResult;
 }
 
-console.log("getSubTotal(cart1); => ", getSubTotal(cart3));
+console.log("getSubTotal(cart1); => ", getSubTotal(cart1));
 
 const getDiscount = (param1, param2) => {
 	const subTotal = getSubTotal(param1);
