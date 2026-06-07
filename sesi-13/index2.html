@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1 id="h1-example">
+    Hallow World
+  </h1>
+
+  <script>
+
+    // console.log("document => ", document)
+    // console.log("document h1=> ", document.children[0].children[4].children[0])
+
+    function handlingClick() {
+      console.log("TERKLIK BOSSS")
+    }
+
+    const newDom = document.createElement("button");
+    newDom.textContent = "INI ADALAH BUTTON"
+    newDom.addEventListener("click", handlingClick)
+
+
+    function handlingText() {
+      console.log("text nya ter klik")
+    }
+
+    const newDomBtn = document.createElement("p")
+    newDomBtn.textContent = "ini baru"
+    newDomBtn.addEventListener("mouseover", handlingText)
+    newDomBtn.onmouseover = "asd"
+
+
+    // document.children[0].children[4].children[0].appendChild(newDom)
+
+    document.getElementById("h1-example").appendChild(newDom)
+    document.getElementById("h1-example").appendChild(newDomBtn)
+
+
+    // document.getElementById("h1-example").appendChild(newDom)
+
+    console.log("document => ", document.getElementById("h1-example"))
+
+
+  </script>
+
+</body>
+
+</html>

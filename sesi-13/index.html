@@ -40,6 +40,9 @@
     <h1>List Product</h1>
     <div id="list" class="list">
     </div>
+    <h1>
+      <p></p>
+    </h1>
   </div>
   <div class="list-product" style="margin-top: 20px;">
     <h1>List Keranjang</h1>
@@ -76,6 +79,8 @@
       },
     ];
 
+    const cart = {}
+
     const elementList = document.querySelector("#list");
     const elementListKeranjang = document.querySelector("#list-keranjang");
 
@@ -84,10 +89,10 @@
       elementUl.className = "card-product"
 
       const elementName = document.createElement("li");
-      elementName.textContent = `name: ${value.name}`
+      elementName.textContent = `name: ${value.name}`;
 
       const elementPrice = document.createElement("li");
-      elementPrice.textContent = `price: ${value.price}`
+      elementPrice.textContent = `price: ${value.price}`;
 
       const elementStock = document.createElement("li");
       elementStock.textContent = `stock: ${value.stock}`
@@ -98,14 +103,29 @@
 
       elementButton.addEventListener("click", function () {
         products[index].stock = products[index].stock - 1
+
+        if (cart[products[index].id]) {
+          cart[products[index].id] += 1
+        } else {
+          cart[products[index].id] = 1
+        }
+
         elementStock.textContent = `stock: ${value.stock}`
 
-        const cartElement = document.createElement("p");
-        cartElement.textContent = `- ${value.name}`
+        const elementItemCart = document.getElementById("cart-" + products[index].id)
 
-        elementListKeranjang.appendChild(cartElement)
+        if (elementItemCart) {
+          elementItemCart.textContent = `- ${value.name} : qty = ${cart[products[index].id]}`
+        } else {
+          const cartElement = document.createElement("p");
+          cartElement.id = "cart-" + products[index].id
+          cartElement.textContent = `- ${value.name} : qty = ${cart[products[index].id]}`
+          elementListKeranjang.appendChild(cartElement)
+        }
+
+
+
       })
-
 
       elementUl.appendChild(elementName)
       elementUl.appendChild(elementPrice)
