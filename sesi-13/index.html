@@ -33,24 +33,65 @@
     margin-top: 12px;
     background-color: bisque;
   }
+
+  .stock-available {
+    color: green
+  }
+
+  .stock-not-available {
+    color: red
+  }
 </style>
 
 <body>
   <div class="list-product">
     <h1>List Product</h1>
     <div id="list" class="list">
+
     </div>
-    <h1>
-      <p></p>
-    </h1>
+
   </div>
   <div class="list-product" style="margin-top: 20px;">
     <h1>List Keranjang</h1>
     <div id="list-keranjang" class="list">
     </div>
   </div>
+  <div id="example">
+
+  </div>
 
   <script>
+
+    // const exampleText = [
+    //   "Hallo World 1",
+    //   "Hallo World 2",
+    //   "Hallo World 3",
+    //   "Hallo World 4",
+    //   "Hallo World 5",
+    //   "Hallo World 6",
+    //   "Hallo World 7",
+    //   "Hallo World 8",
+    // ]
+
+    // const elementExample = document.getElementById("example");
+
+    // function handleLooping(value, index) {
+    //   const newH1 = document.createElement("h1");
+    //   newH1.textContent = value
+
+    //   const newButton = document.createElement("button");
+    //   newButton.textContent = "Click Me"
+
+    //   newButton.addEventListener("click", function () {
+    //     console.log(value)
+    //   })
+
+    //   elementExample.appendChild(newH1)
+    //   elementExample.appendChild(newButton)
+    // }
+
+    // exampleText.forEach(handleLooping)
+
 
     const products = [
       {
@@ -81,10 +122,12 @@
 
     const cart = {}
 
-    const elementList = document.querySelector("#list");
-    const elementListKeranjang = document.querySelector("#list-keranjang");
+    const elementList = document.getElementById("list");
+    const elementListKeranjang = document.getElementById("list-keranjang");
+
 
     products.forEach((value, index) => {
+
       const elementUl = document.createElement("ul");
       elementUl.className = "card-product"
 
@@ -97,34 +140,50 @@
       const elementStock = document.createElement("li");
       elementStock.textContent = `stock: ${value.stock}`
 
+      if (value.stock < 1) {
+        elementStock.style.color = "red"
+      } else {
+        elementStock.style.color = "green"
+      }
+
       const elementButton = document.createElement("button");
       elementButton.textContent = "Add";
       elementButton.className = "button-add";
 
       elementButton.addEventListener("click", function () {
-        products[index].stock = products[index].stock - 1
 
-        if (cart[products[index].id]) {
-          cart[products[index].id] += 1
+        products[index].stock -= 1;
+
+        elementStock.textContent = `stock: ${products[index].stock}`
+
+        if (products[index].stock < 1) {
+          elementStock.style.color = "red"
+          elementButton.disabled = true
         } else {
-          cart[products[index].id] = 1
+          elementStock.style.color = "green"
         }
 
-        elementStock.textContent = `stock: ${value.stock}`
+        // update cart list
 
-        const elementItemCart = document.getElementById("cart-" + products[index].id)
+        if (cart[value.id]) {
+          cart[value.id].qty += 1
+        } else {
+          cart[value.id] = {
+            id: value.id,
+            qty: 1,
+          }
+        }
 
-        if (elementItemCart) {
-          elementItemCart.textContent = `- ${value.name} : qty = ${cart[products[index].id]}`
+        const elementCart = document.getElementById("cart-" + value.id)
+
+        if (elementCart) {
+          elementCart.textContent = `- ${value.name} : qty = ${cart[value.id].qty}`
         } else {
           const cartElement = document.createElement("p");
-          cartElement.id = "cart-" + products[index].id
-          cartElement.textContent = `- ${value.name} : qty = ${cart[products[index].id]}`
+          cartElement.id = "cart-" + value.id
+          cartElement.textContent = `- ${value.name} : qty = ${cart[value.id].qty}`
           elementListKeranjang.appendChild(cartElement)
         }
-
-
-
       })
 
       elementUl.appendChild(elementName)
@@ -132,26 +191,8 @@
       elementUl.appendChild(elementStock)
       elementUl.appendChild(elementButton)
 
-      console.log("elementUl => ", elementUl)
       elementList.appendChild(elementUl)
     })
-
-    const example = 2;
-
-    console.log(`count : ${example}`)
-
-    // const cardList = products.map(function (value) {
-    //   return `<ul class="card-product">
-    //     <li>nama: ${value.name}</li>
-    //     <li>price: ${value.price}</li>
-    //     <li>stock: ${value.stock}</li>
-    //   </ul>`
-    // })
-
-    // console.log("cardList => ", cardList.join(""))
-
-    // elementList.innerHTML = cardList.join("")
-
   </script>
 </body>
 
