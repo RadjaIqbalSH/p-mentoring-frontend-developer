@@ -120,79 +120,137 @@
       },
     ];
 
-    const cart = {}
+    const cart = {
+      2: {
+        id: 2,
+        qty: 2
+      },
+      1: {
+        id: 2,
+        qty: 2
+      }
+    }
+
+    cart[2].id
 
     const elementList = document.getElementById("list");
     const elementListKeranjang = document.getElementById("list-keranjang");
 
+    document.addEventListener("DOMContentLoaded", () => {
+      const rawStorageCart = localStorage.getItem("cart")
+      const storageCart = JSON.parse(rawStorageCart);
+      Object.assign(cart, storageCart)
 
-    products.forEach((value, index) => {
+      const rawStorageProducts = localStorage.getItem("products")
+      const storageProducts = JSON.parse(rawStorageProducts);
+      Object.assign(products, storageProducts)
 
-      const elementUl = document.createElement("ul");
-      elementUl.className = "card-product"
+      syncCart();
+      loopingProducts();
+    });
 
-      const elementName = document.createElement("li");
-      elementName.textContent = `name: ${value.name}`;
+    function findProduct(id) {
+      const resultFind = products.find(function (item) {
+        return item.id === id
+      })
 
-      const elementPrice = document.createElement("li");
-      elementPrice.textContent = `price: ${value.price}`;
+      return resultFind
+    }
 
-      const elementStock = document.createElement("li");
-      elementStock.textContent = `stock: ${value.stock}`
+    function syncCart() {
+      for (const key in cart) {
 
-      if (value.stock < 1) {
-        elementStock.style.color = "red"
-      } else {
-        elementStock.style.color = "green"
+        const detailProduct = findProduct(cart[key].id)
+
+        const elementCart = document.getElementById("cart-" + cart[key].id)
+
+        if (elementCart) {
+          elementCart.textContent = `- ${detailProduct.name} : qty = ${cart[key].qty}`
+        } else {
+          const cartElement = document.createElement("p");
+          cartElement.id = "cart-" + cart[key].id
+          cartElement.textContent = `- ${detailProduct.name} : qty = ${cart[key].qty}`
+          elementListKeranjang.appendChild(cartElement)
+        }
       }
+    }
 
-      const elementButton = document.createElement("button");
-      elementButton.textContent = "Add";
-      elementButton.className = "button-add";
+    function loopingProducts() {
+      elementList.innerHTML = ""
+      products.forEach((value, index) => {
 
-      elementButton.addEventListener("click", function () {
+        const elementUl = document.createElement("ul");
+        elementUl.className = "card-product"
 
-        products[index].stock -= 1;
+        const elementName = document.createElement("li");
+        elementName.textContent = `name: ${value.name}`;
 
-        elementStock.textContent = `stock: ${products[index].stock}`
+        const elementPrice = document.createElement("li");
+        elementPrice.textContent = `price: ${value.price}`;
 
-        if (products[index].stock < 1) {
+        const elementStock = document.createElement("li");
+        elementStock.textContent = `stock: ${value.stock}`
+
+        if (value.stock < 1) {
           elementStock.style.color = "red"
-          elementButton.disabled = true
         } else {
           elementStock.style.color = "green"
         }
 
-        // update cart list
+        const elementButton = document.createElement("button");
+        elementButton.textContent = "Add";
+        elementButton.className = "button-add";
 
-        if (cart[value.id]) {
-          cart[value.id].qty += 1
-        } else {
-          cart[value.id] = {
-            id: value.id,
-            qty: 1,
+        elementButton.addEventListener("click", function () {
+
+          products[index].stock -= 1;
+
+          localStorage.setItem("products", JSON.stringify(products))
+
+          elementStock.textContent = `stock: ${products[index].stock}`
+
+          if (products[index].stock < 1) {
+            elementStock.style.color = "red"
+            elementButton.disabled = true
+          } else {
+            elementStock.style.color = "green"
           }
-        }
 
-        const elementCart = document.getElementById("cart-" + value.id)
+          // update cart list
 
-        if (elementCart) {
-          elementCart.textContent = `- ${value.name} : qty = ${cart[value.id].qty}`
-        } else {
-          const cartElement = document.createElement("p");
-          cartElement.id = "cart-" + value.id
-          cartElement.textContent = `- ${value.name} : qty = ${cart[value.id].qty}`
-          elementListKeranjang.appendChild(cartElement)
-        }
+          if (cart[value.id]) {
+            cart[value.id].qty += 1
+          } else {
+            cart[value.id] = {
+              id: value.id,
+              qty: 1,
+            }
+          }
+
+          localStorage.setItem("cart", JSON.stringify(cart))
+
+          const elementCart = document.getElementById("cart-" + value.id)
+
+          if (elementCart) {
+            elementCart.textContent = `- ${value.name} : qty = ${cart[value.id].qty}`
+          } else {
+            const cartElement = document.createElement("p");
+            cartElement.id = "cart-" + value.id
+            cartElement.textContent = `- ${value.name} : qty = ${cart[value.id].qty}`
+            elementListKeranjang.appendChild(cartElement)
+          }
+        })
+
+        elementUl.appendChild(elementName)
+        elementUl.appendChild(elementPrice)
+        elementUl.appendChild(elementStock)
+        elementUl.appendChild(elementButton)
+
+        elementList.appendChild(elementUl)
       })
+    }
 
-      elementUl.appendChild(elementName)
-      elementUl.appendChild(elementPrice)
-      elementUl.appendChild(elementStock)
-      elementUl.appendChild(elementButton)
-
-      elementList.appendChild(elementUl)
-    })
+    loopingProducts();
   </script>
 </body>
 
