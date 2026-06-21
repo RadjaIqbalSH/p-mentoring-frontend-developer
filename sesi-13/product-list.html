@@ -53,6 +53,7 @@
   </div>
   <div class="list-product" style="margin-top: 20px;">
     <h1>List Keranjang</h1>
+    <a href="/sesi-13/checkout.html">Checkout</a>
     <div id="list-keranjang" class="list">
     </div>
   </div>
@@ -120,18 +121,7 @@
       },
     ];
 
-    const cart = {
-      2: {
-        id: 2,
-        qty: 2
-      },
-      1: {
-        id: 2,
-        qty: 2
-      }
-    }
-
-    cart[2].id
+    const cart = {}
 
     const elementList = document.getElementById("list");
     const elementListKeranjang = document.getElementById("list-keranjang");
@@ -200,6 +190,10 @@
         const elementButton = document.createElement("button");
         elementButton.textContent = "Add";
         elementButton.className = "button-add";
+
+        if (value.stock < 1) {
+          elementButton.disabled = "red"
+        }
 
         elementButton.addEventListener("click", function () {
 
